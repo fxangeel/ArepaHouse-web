@@ -20,4 +20,4 @@ Demo de la web de Arepa House (Ocumare de la Costa, Aragua). Un solo archivo: `i
 - Las imágenes son ilustraciones de muestra; van las fotos reales.
 - Quitar la franja "Demo de diseño" y la etiqueta `noindex`.
 
-Web Design by: Angel Vielma
+Web Design by: Angel Vielma · angelvielmatl2@gmail.com
