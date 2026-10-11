@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arepa House · Arepas al momento en Ocumare de la Costa</title>
+<meta name="description" content="Demo de la web de Arepa House: menú, arma tu arepa y pedidos por WhatsApp.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#121110">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121110'/%3E%3Cellipse cx='32' cy='34' rx='22' ry='14' fill='%23D4A73A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--k:#121110;--k2:#1C1A17;--k3:#26231E;--line:#3A352C;--g:#D4A73A;--c:#F5EFE0;--m:#B9B0A0;--pad:clamp(20px,5vw,72px);--disp:'Bricolage Grotesque',system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--k);color:var(--c);font-family:'Instrument Sans',system-ui,sans-serif;overflow-x:hidden}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{color:var(--g)}a:hover{color:var(--c)}
+h1,h2,h3,h4,p{margin:0}
+button{font:inherit}
+[hidden]{display:none !important}
+.disp{font-family:var(--disp);font-weight:800;letter-spacing:-.035em;line-height:.95}
+.h2{font-size:clamp(40px,6.4vw,92px)}
+.sec{padding:clamp(48px,7vw,96px) var(--pad);border-bottom:1.5px solid var(--line);scroll-margin-top:76px}
+.muted{color:var(--m)}
+.gold{color:var(--g)}
+.lead{font-size:19px;line-height:1.5;font-weight:500;color:var(--m);max-width:30em}
+.row{display:flex;flex-wrap:wrap}
+.col{display:flex;flex-direction:column}
+.lift{transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s cubic-bezier(.2,.8,.2,1),border-color .3s ease}
+.lift:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--g);border-color:var(--g)}
+.zoom{transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.lift:hover .zoom{transform:scale(1.07)}
+.press{cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,background-color .25s ease,color .25s ease,border-color .25s ease}
+.press:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--c)}
+.press:active{transform:scale(.96);box-shadow:none}
+.press:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--g);outline-offset:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-weight:700;font-size:18px;border-radius:16px;padding:16px 28px;border:1.5px solid var(--g);background:var(--g);color:var(--k)}
+.btn:hover{color:var(--k)}
+.btn.ghost{background:var(--k);color:var(--c);border-color:var(--c)}
+.btn.dark{background:var(--k);color:var(--c);border-color:var(--k)}
+.btn.sm{font-size:16px;border-radius:999px;padding:11px 20px;min-height:46px}
+.pill{font-weight:700;font-size:16px;color:var(--c);background:var(--k);border:1.5px solid var(--m);border-radius:999px;padding:11px 20px;min-height:46px}
+.pill[aria-pressed="true"]{background:var(--g);color:var(--k);border-color:var(--g)}
+.pill:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.round{font-weight:700;font-size:20px;line-height:1;width:44px;height:44px;border-radius:999px;color:var(--c);background:var(--k);border:1.5px solid var(--m)}
+.round.plus{color:var(--k);background:var(--g);border-color:var(--g)}
+.navlink{position:relative;text-decoration:none;color:var(--c);padding:12px 0}
+.navlink::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:2px;background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.navlink:hover::after{transform:scaleX(1)}
+.top{position:sticky;top:0;z-index:10;background:var(--k);border-bottom:1.5px solid var(--line)}
+.top header{align-items:center;justify-content:space-between;gap:10px 16px;padding:14px var(--pad)}
+.logo{text-decoration:none;font-family:var(--disp);font-weight:800;font-size:24px;letter-spacing:-.02em;color:var(--c);display:inline-flex;align-items:center;gap:8px}
+.logo span{background:var(--g);color:var(--k);padding:6px 12px;border-radius:10px}
+.badge{background:var(--k);color:var(--c);border-radius:999px;min-width:26px;padding:2px 6px;text-align:center;font-size:14px;display:inline-block}
+#cart{border-top:1.5px solid var(--line);background:var(--k2);padding:20px var(--pad);max-height:60vh;overflow-y:auto;gap:14px}
+.line{align-items:center;justify-content:space-between;gap:10px 16px;background:var(--k3);border:1.5px solid var(--line);border-radius:14px;padding:10px 14px}
+.demo{background:var(--k3);color:var(--m);text-align:center;font-size:13px;font-weight:600;padding:6px var(--pad)}
+.hero{align-items:center;gap:48px;overflow:hidden}
+.hero h1{font-size:clamp(42px,6.4vw,90px)}
+.hl{display:inline-block;color:var(--k);background:var(--g);border-radius:18px;padding:0 .14em .06em;transform:rotate(-1.5deg)}
+.tag{font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--g);border:1.5px solid var(--g);border-radius:999px;padding:8px 16px}
+.heroimg{flex:1 1 360px;min-width:0;position:relative;height:clamp(300px,42vw,520px)}
+.frame{height:100%;background:var(--k3);border:1.5px solid var(--line);border-radius:32px;overflow:hidden}
+.seal{position:absolute;left:-14px;top:-28px;width:128px;height:128px}
+.seal span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--k);font-family:var(--disp);font-weight:800;font-size:17px;line-height:1;transform:rotate(-10deg)}
+.cintabox{background:var(--g);color:var(--k);overflow:hidden;white-space:nowrap;padding:14px 0}
+.cinta{display:inline-block;font-family:var(--disp);font-weight:800;font-size:24px;text-transform:uppercase}
+.cinta span{padding:0 22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px}
+.card{background:var(--k2);border:1.5px solid var(--line);border-radius:20px;overflow:hidden;height:100%}
+.card .ph{height:180px;background:var(--k3);overflow:hidden}
+.card .body{padding:18px;gap:10px;flex-grow:1}
+.card h4{font-family:var(--disp);font-weight:800;font-size:24px;letter-spacing:-.02em}
+.card .foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:8px;min-height:54px}
+.price{font-family:var(--disp);font-weight:800;font-size:24px;color:var(--g)}
+.search{font:inherit;font-size:16px;color:var(--c);background:var(--k2);border:1.5px solid var(--m);border-radius:999px;padding:12px 18px;width:100%}
+.search::placeholder{color:var(--m)}
+.build{background:var(--k);border:1.5px solid var(--g);border-radius:24px;overflow:hidden;flex:1 1 340px;min-width:0}
+.cta{background:var(--g);color:var(--k);border-bottom:0}
+footer{padding:24px var(--pad);align-items:center;justify-content:space-between;gap:12px;font-size:14px}
+@keyframes sube{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes baja{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+@keyframes corre{to{transform:translateX(-50%)}}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes bump{40%{transform:scale(1.3)}}
+.sube{animation:sube .7s cubic-bezier(.2,.8,.2,1) both}
+.in{animation:sube .55s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.1s}.d2{animation-delay:.22s}.d3{animation-delay:.34s}
+.baja{animation:baja .35s cubic-bezier(.2,.8,.2,1) both}
+.cinta{animation:corre 28s linear infinite}
+.cintabox:hover .cinta{animation-play-state:paused}
+.gira{animation:gira 18s linear infinite}
+.flota{animation:flota 6s ease-in-out infinite}
+.bump{animation:bump .4s ease}
+.rev{transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.rev.pre{opacity:0;transform:translateY(32px)}
+@media (prefers-reduced-motion:reduce){
+html{scroll-behavior:auto}
+*,*::after{animation:none !important;transition:none !important}
+.rev.pre{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+<p class="demo">Demo de diseño · el menú y los precios son de ejemplo</p>
+<header class="row">
+<a class="logo" href="#inicio"><span>AREPA</span>HOUSE</a>
+<nav class="row" aria-label="Principal" style="align-items:center;gap:4px 26px;font-weight:600">
+<a class="navlink" href="#menu">Menú</a>
+<a class="navlink" href="#arma">Arma tu arepa</a>
+<a class="navlink" href="#contacto">Contacto</a>
+</nav>
+<button id="cartBtn" class="btn sm press" type="button" aria-expanded="false" aria-controls="cart">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+Mi pedido <span id="count" class="badge">0</span>
+</button>
+</header>
+<section id="cart" class="col baja" aria-label="Tu pedido" hidden></section>
+</div>
+
+<main>
+<section id="inicio" class="sec row hero">
+<div class="col" style="flex:1 1 440px;min-width:0;align-items:flex-start;gap:28px">
+<span class="tag sube">Arepera · Ocumare de la Costa</span>
+<h1 class="disp sube d1">Arepas al momento, <span class="hl">rellenas</span> hasta el borde.</h1>
+<p class="lead sube d2" style="font-size:clamp(18px,1.6vw,22px)">Elige una de la casa o ármala a tu gusto. Haces el pedido aquí y te llega por WhatsApp, sin vueltas.</p>
+<div class="row sube d3" style="gap:16px">
+<a class="btn press" href="#menu">Ver el menú</a>
+<a class="btn ghost press" href="#arma">Armar mi arepa</a>
+</div>
+</div>
+<div class="heroimg sube d2">
+<div class="flota" style="height:100%"><div class="frame lift"><img class="zoom" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNzYwIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9Ijc2MCIgZmlsbD0iIzI2MjMxRSIvPjxjaXJjbGUgY3g9IjQwMC4wIiBjeT0iMzgwLjAiIHI9IjMxOS4yIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MCAxNTApIHNjYWxlKDEuMykiPjxlbGxpcHNlIGN4PSIzMDAiIGN5PSIzNDUiIHJ4PSIxNzAiIHJ5PSIxNiIgZmlsbD0iIzEyMTExMCIgb3BhY2l0eT0iLjUiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMjg1IiByeD0iMTY1IiByeT0iNTUiIGZpbGw9IiNGNUVGRTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMTQwIDI2MnExOCAtNDAgNDggLTE0cTIyIC0zNiA1MiAtOHEyNCAtMzQgNTQgLTZxMjYgLTM0IDU2IC00cTI2IC0zMCA1NCAycTM0IC0yNCA1OCAyMnEtMTYwIDY2IC0zMjIgOHoiIGZpbGw9IiM4QzZBMUUiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxODUiIGN5PSIyNTAiIHI9IjExIiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjI2NSIgY3k9IjI0NiIgcj0iMTEiIGZpbGw9IiNENEE3M0EiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iMzQ1IiBjeT0iMjQ4IiByPSIxMSIgZmlsbD0iI0Q0QTczQSIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSI0MjAiIGN5PSIyNTAiIHI9IjExIiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjIyNSIgY3k9IjI2MiIgcj0iOCIgZmlsbD0iI0Y1RUZFMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIzMDUiIGN5PSIyNjQiIHI9IjgiIGZpbGw9IiNGNUVGRTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iMzg1IiBjeT0iMjYyIiByPSI4IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMDAgMjYycTE0IC0yNiAzMCAtMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Y1RUZFMCIgc3Ryb2tlLXdpZHRoPSI5IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzAwIDI2MnExNCAtMjYgMzAgLTM0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGNUVGRTAiIHN0cm9rZS13aWR0aD0iOSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTQwMCAyNjJxMTQgLTI2IDMwIC0zNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRjVFRkUwIiBzdHJva2Utd2lkdGg9IjkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIHRyYW5zZm9ybT0icm90YXRlKC03IDMwMCAxODApIj48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMTgwIiByeD0iMTY4IiByeT0iNjQiIGZpbGw9IiNGNUVGRTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjMwIDE1MHExMCAyNiAwIDU2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3NSAxNTBxMTAgMjYgMCA1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zMjAgMTUwcTEwIDI2IDAgNTYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzY1IDE1MHExMCAyNiAwIDU2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPjwvZz48cGF0aCBkPSJNMzQwIDE1MGMtMTYgLTE4IDE2IC0zMCAwIC01MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRDRBNzNBIiBzdHJva2Utd2lkdGg9IjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik00MDAgMTUwYy0xNiAtMTggMTYgLTMwIDAgLTUyIiBmaWxsPSJub25lIiBzdHJva2U9IiNENEE3M0EiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTQ2MCAxNTBjLTE2IC0xOCAxNiAtMzAgMCAtNTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Q0QTczQSIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=" alt="Ilustración: arepa rellena recién hecha"></div></div>
+<div class="seal">
+<svg class="gira" aria-hidden="true" width="128" height="128" viewBox="0 0 128 128"><path fill="#D4A73A" d="M64 4l12 14 17-7 5 18 18 5-7 17 14 13-14 13 7 17-18 5-5 18-17-7-12 14-12-14-17 7-5-18-18-5 7-17L3 64l14-13-7-17 18-5 5-18 17 7z"/></svg>
+<span>Hecha<br>al momento</span>
+</div>
+</div>
+</section>
+
+<div class="cintabox" aria-hidden="true"><div class="cinta">
+<span>Reina pepiada</span>●<span>Pelúa</span>●<span>Dominó</span>●<span>Catira</span>●<span>Pabellón</span>●<span>Arma la tuya</span>●<span>Reina pepiada</span>●<span>Pelúa</span>●<span>Dominó</span>●<span>Catira</span>●<span>Pabellón</span>●<span>Arma la tuya</span>●
+</div></div>
+
+<section id="menu" class="sec col" style="gap:36px">
+<div class="row rev" style="align-items:flex-end;justify-content:space-between;gap:24px">
+<div class="col" style="gap:12px;min-width:0">
+<h2 class="disp h2">El menú</h2>
+<p class="lead">Elige una categoría o busca lo que se te antoja. Precios en dólares.</p>
+</div>
+<div class="col" style="gap:8px;flex:0 1 320px;min-width:0">
+<label for="buscar" style="font-weight:700;font-size:15px">Buscar en el menú</label>
+<input id="buscar" class="search" type="search" placeholder="Ej.: pollo, queso, jugo" autocomplete="off">
+</div>
+</div>
+<div id="pills" class="row rev" role="group" aria-label="Categorías" style="gap:12px"></div>
+<div id="cats" class="col" style="gap:36px"></div>
+</section>
+
+<section id="arma" class="sec" style="background:var(--k2)">
+<div class="row rev" style="gap:40px;align-items:flex-start">
+<div class="col" style="flex:1 1 440px;min-width:0;gap:28px">
+<div class="col" style="gap:12px">
+<h2 class="disp h2">Arma tu <span class="gold">arepa</span></h2>
+<p class="lead">Tres pasos. El precio se va sumando mientras eliges.</p>
+</div>
+<div class="col" style="gap:12px"><h3 style="font-size:18px"><span class="gold">1.</span> ¿Cómo la quieres?</h3><div id="bBases" class="row" role="group" aria-label="Tipo de arepa" style="gap:10px"></div></div>
+<div class="col" style="gap:12px"><h3 style="font-size:18px"><span class="gold">2.</span> Elige tus rellenos <span class="muted" style="font-weight:500;font-size:15px">(máximo 5)</span></h3><div id="bFills" class="row" role="group" aria-label="Rellenos" style="gap:10px"></div><p id="bMax" class="gold baja" role="status" style="font-size:15px;font-weight:600" hidden>Llegaste al máximo de 5 rellenos. Quita uno para cambiarlo.</p></div>
+<div class="col" style="gap:12px"><h3 style="font-size:18px"><span class="gold">3.</span> ¿Algún extra?</h3><div id="bExtras" class="row" role="group" aria-label="Extras" style="gap:10px"></div></div>
+</div>
+<aside class="build col" aria-label="Tu arepa">
+<div style="height:200px;background:var(--k3)"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzI2MjMxRSIvPjxjaXJjbGUgY3g9IjMwMC4wIiBjeT0iMjAwLjAiIHI9IjE2OC4wIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMzQ1IiByeD0iMTcwIiByeT0iMTYiIGZpbGw9IiMxMjExMTAiIG9wYWNpdHk9Ii41Ii8+PGVsbGlwc2UgY3g9IjMwMCIgY3k9IjI4NSIgcng9IjE2NSIgcnk9IjU1IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE0MCAyNjJxMTggLTQwIDQ4IC0xNHEyMiAtMzYgNTIgLThxMjQgLTM0IDU0IC02cTI2IC0zNCA1NiAtNHEyNiAtMzAgNTQgMnEzNCAtMjQgNTggMjJxLTE2MCA2NiAtMzIyIDh6IiBmaWxsPSIjOEM2QTFFIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMTg1IiBjeT0iMjUwIiByPSI3IiBmaWxsPSIjMTIxMTEwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjIyNSIgY3k9IjI2MiIgcj0iNyIgZmlsbD0iIzEyMTExMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIyNjUiIGN5PSIyNDYiIHI9IjciIGZpbGw9IiMxMjExMTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iMzA1IiBjeT0iMjY0IiByPSIxMCIgZmlsbD0iI0Q0QTczQSIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIzNDUiIGN5PSIyNDgiIHI9IjEwIiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0zNjAgMjYycTE0IC0yNiAzMCAtMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Y1RUZFMCIgc3Ryb2tlLXdpZHRoPSI5IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzk1IDI2MnExNCAtMjYgMzAgLTM0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGNUVGRTAiIHN0cm9rZS13aWR0aD0iOSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGcgdHJhbnNmb3JtPSJyb3RhdGUoLTcgMzAwIDE4MCkiPjxlbGxpcHNlIGN4PSIzMDAiIGN5PSIxODAiIHJ4PSIxNjgiIHJ5PSI2NCIgZmlsbD0iI0Y1RUZFMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMzAgMTUwcTEwIDI2IDAgNTYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjc1IDE1MHExMCAyNiAwIDU2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTMyMCAxNTBxMTAgMjYgMCA1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zNjUgMTUwcTEwIDI2IDAgNTYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L2c+PC9zdmc+" alt="Ilustración: arepa armada"></div>
+<div class="col" style="padding:24px;gap:16px">
+<h3 class="disp" style="font-size:28px;letter-spacing:-.02em">Tu arepa</h3>
+<p id="bDesc" aria-live="polite" style="font-size:17px;line-height:1.5"></p>
+<div class="row" style="justify-content:space-between;align-items:baseline;gap:16px;border-top:1.5px solid var(--line);padding-top:16px">
+<span class="muted" style="font-size:17px">Precio</span>
+<span id="bPrice" class="disp gold" style="font-size:40px;display:inline-block"></span>
+</div>
+<p id="bHint" class="muted" style="font-size:15px;font-weight:600">Elige al menos un relleno para poder agregarla.</p>
+<button id="bAdd" class="btn press" type="button" hidden>Agregar al pedido</button>
+<p id="bDone" class="baja" role="status" style="font-size:15px;font-weight:700;color:var(--k);background:var(--g);border-radius:12px;padding:10px 14px" hidden>Lista. Ya está en tu pedido, arriba a la derecha.</p>
+</div>
+</aside>
+</div>
+</section>
+
+<section id="contacto" class="sec cta">
+<div class="row rev" style="align-items:center;justify-content:space-between;gap:32px">
+<h2 class="disp" style="flex:1 1 420px;min-width:0;font-size:clamp(38px,5.6vw,76px)">¿Con hambre? Pide ya.</h2>
+<div class="col" style="align-items:flex-start;gap:16px">
+<a class="btn dark press wa" href="#" target="_blank" rel="noopener" style="font-size:20px;padding:18px 30px">Pedir por WhatsApp
+<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+<p style="font-size:17px;font-weight:600;line-height:1.6">[TELÉFONO / WHATSAPP] · [HORARIO]<br>[DIRECCIÓN], Ocumare de la Costa, Aragua · [INSTAGRAM]</p>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="row">
+<span>Arepa House · Ocumare de la Costa, Aragua, Venezuela</span>
+<span class="muted">Web Design by: Angel Vielma</span>
+</footer>
+
+<script>
+// ====== DATOS: edita aquí el menú, los precios y el WhatsApp ======
+const WHATSAPP = ''; // número con código de país y sin signos, ej.: '584241234567'
+const IMG = {"reina": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzI2MjMxRSIvPjxjaXJjbGUgY3g9IjMwMC4wIiBjeT0iMjAwLjAiIHI9IjE2OC4wIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMzQ1IiByeD0iMTcwIiByeT0iMTYiIGZpbGw9IiMxMjExMTAiIG9wYWNpdHk9Ii41Ii8+PGVsbGlwc2UgY3g9IjMwMCIgY3k9IjI4NSIgcng9IjE2NSIgcnk9IjU1IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE0MCAyNjJxMTggLTQwIDQ4IC0xNHEyMiAtMzYgNTIgLThxMjQgLTM0IDU0IC02cTI2IC0zNCA1NiAtNHEyNiAtMzAgNTQgMnEzNCAtMjQgNTggMjJxLTE2MCA2NiAtMzIyIDh6IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMTg1IiBjeT0iMjUwIiByPSI5IiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjI2NSIgY3k9IjI0NiIgcj0iOSIgZmlsbD0iI0Q0QTczQSIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIzNDUiIGN5PSIyNDgiIHI9IjkiIGZpbGw9IiNENEE3M0EiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iNDIwIiBjeT0iMjUwIiByPSI5IiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjIyNSIgY3k9IjI2MiIgcj0iNiIgZmlsbD0iIzhDNkExRSIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIzMDUiIGN5PSIyNjQiIHI9IjYiIGZpbGw9IiM4QzZBMUUiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iMzg1IiBjeT0iMjYyIiByPSI2IiBmaWxsPSIjOEM2QTFFIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxnIHRyYW5zZm9ybT0icm90YXRlKC03IDMwMCAxODApIj48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMTgwIiByeD0iMTY4IiByeT0iNjQiIGZpbGw9IiNGNUVGRTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjMwIDE1MHExMCAyNiAwIDU2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3NSAxNTBxMTAgMjYgMCA1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zMjAgMTUwcTEwIDI2IDAgNTYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzY1IDE1MHExMCAyNiAwIDU2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPjwvc3ZnPg==", "pelua": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFDMUExNyIvPjxjaXJjbGUgY3g9IjMwMC4wIiBjeT0iMjAwLjAiIHI9IjE2OC4wIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMzQ1IiByeD0iMTcwIiByeT0iMTYiIGZpbGw9IiMxMjExMTAiIG9wYWNpdHk9Ii41Ii8+PGVsbGlwc2UgY3g9IjMwMCIgY3k9IjI4NSIgcng9IjE2NSIgcnk9IjU1IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE0MCAyNjJxMTggLTQwIDQ4IC0xNHEyMiAtMzYgNTIgLThxMjQgLTM0IDU0IC02cTI2IC0zNCA1NiAtNHEyNiAtMzAgNTQgMnEzNCAtMjQgNTggMjJxLTE2MCA2NiAtMzIyIDh6IiBmaWxsPSIjOEM2QTFFIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE4MCAyNjJxMTQgLTI2IDMwIC0zNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRDRBNzNBIiBzdHJva2Utd2lkdGg9IjkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMjAgMjYycTE0IC0yNiAzMCAtMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Q0QTczQSIgc3Ryb2tlLXdpZHRoPSI5IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjYwIDI2MnExNCAtMjYgMzAgLTM0IiBmaWxsPSJub25lIiBzdHJva2U9IiNENEE3M0EiIHN0cm9rZS13aWR0aD0iOSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTMwMCAyNjJxMTQgLTI2IDMwIC0zNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRDRBNzNBIiBzdHJva2Utd2lkdGg9IjkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zNDAgMjYycTE0IC0yNiAzMCAtMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Q0QTczQSIgc3Ryb2tlLXdpZHRoPSI5IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzgwIDI2MnExNCAtMjYgMzAgLTM0IiBmaWxsPSJub25lIiBzdHJva2U9IiNENEE3M0EiIHN0cm9rZS13aWR0aD0iOSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGcgdHJhbnNmb3JtPSJyb3RhdGUoLTcgMzAwIDE4MCkiPjxlbGxpcHNlIGN4PSIzMDAiIGN5PSIxODAiIHJ4PSIxNjgiIHJ5PSI2NCIgZmlsbD0iI0Y1RUZFMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMzAgMTUwcTEwIDI2IDAgNTYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjc1IDE1MHExMCAyNiAwIDU2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTMyMCAxNTBxMTAgMjYgMCA1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zNjUgMTUwcTEwIDI2IDAgNTYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L2c+PC9zdmc+", "domino": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzI2MjMxRSIvPjxjaXJjbGUgY3g9IjMwMC4wIiBjeT0iMjAwLjAiIHI9IjE2OC4wIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMzQ1IiByeD0iMTcwIiByeT0iMTYiIGZpbGw9IiMxMjExMTAiIG9wYWNpdHk9Ii41Ii8+PGVsbGlwc2UgY3g9IjMwMCIgY3k9IjI4NSIgcng9IjE2NSIgcnk9IjU1IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE0MCAyNjJxMTggLTQwIDQ4IC0xNHEyMiAtMzYgNTIgLThxMjQgLTM0IDU0IC02cTI2IC0zNCA1NiAtNHEyNiAtMzAgNTQgMnEzNCAtMjQgNTggMjJxLTE2MCA2NiAtMzIyIDh6IiBmaWxsPSIjM0EzMzJBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMTg1IiBjeT0iMjUwIiByPSI5IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjI2NSIgY3k9IjI0NiIgcj0iOSIgZmlsbD0iI0Y1RUZFMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIzNDUiIGN5PSIyNDgiIHI9IjkiIGZpbGw9IiNGNUVGRTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iNDIwIiBjeT0iMjUwIiByPSI5IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjIyNSIgY3k9IjI2MiIgcj0iNyIgZmlsbD0iIzEyMTExMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIzMDUiIGN5PSIyNjQiIHI9IjciIGZpbGw9IiMxMjExMTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iMzg1IiBjeT0iMjYyIiByPSI3IiBmaWxsPSIjMTIxMTEwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxnIHRyYW5zZm9ybT0icm90YXRlKC03IDMwMCAxODApIj48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMTgwIiByeD0iMTY4IiByeT0iNjQiIGZpbGw9IiNGNUVGRTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjMwIDE1MHExMCAyNiAwIDU2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3NSAxNTBxMTAgMjYgMCA1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zMjAgMTUwcTEwIDI2IDAgNTYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzY1IDE1MHExMCAyNiAwIDU2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPjwvc3ZnPg==", "catira": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFDMUExNyIvPjxjaXJjbGUgY3g9IjMwMC4wIiBjeT0iMjAwLjAiIHI9IjE2OC4wIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMzQ1IiByeD0iMTcwIiByeT0iMTYiIGZpbGw9IiMxMjExMTAiIG9wYWNpdHk9Ii41Ii8+PGVsbGlwc2UgY3g9IjMwMCIgY3k9IjI4NSIgcng9IjE2NSIgcnk9IjU1IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE0MCAyNjJxMTggLTQwIDQ4IC0xNHEyMiAtMzYgNTIgLThxMjQgLTM0IDU0IC02cTI2IC0zNCA1NiAtNHEyNiAtMzAgNTQgMnEzNCAtMjQgNTggMjJxLTE2MCA2NiAtMzIyIDh6IiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE5MCAyNjJxMTQgLTI2IDMwIC0zNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRjVFRkUwIiBzdHJva2Utd2lkdGg9IjkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNDAgMjYycTE0IC0yNiAzMCAtMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Y1RUZFMCIgc3Ryb2tlLXdpZHRoPSI5IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjkwIDI2MnExNCAtMjYgMzAgLTM0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGNUVGRTAiIHN0cm9rZS13aWR0aD0iOSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTM0MCAyNjJxMTQgLTI2IDMwIC0zNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRjVFRkUwIiBzdHJva2Utd2lkdGg9IjkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zOTAgMjYycTE0IC0yNiAzMCAtMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Y1RUZFMCIgc3Ryb2tlLXdpZHRoPSI5IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZyB0cmFuc2Zvcm09InJvdGF0ZSgtNyAzMDAgMTgwKSI+PGVsbGlwc2UgY3g9IjMwMCIgY3k9IjE4MCIgcng9IjE2OCIgcnk9IjY0IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTIzMCAxNTBxMTAgMjYgMCA1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNzUgMTUwcTEwIDI2IDAgNTYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzIwIDE1MHExMCAyNiAwIDU2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTM2NSAxNTBxMTAgMjYgMCA1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvZz48L3N2Zz4=", "pabellon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzI2MjMxRSIvPjxjaXJjbGUgY3g9IjMwMC4wIiBjeT0iMjAwLjAiIHI9IjE2OC4wIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMzQ1IiByeD0iMTcwIiByeT0iMTYiIGZpbGw9IiMxMjExMTAiIG9wYWNpdHk9Ii41Ii8+PGVsbGlwc2UgY3g9IjMwMCIgY3k9IjI4NSIgcng9IjE2NSIgcnk9IjU1IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE0MCAyNjJxMTggLTQwIDQ4IC0xNHEyMiAtMzYgNTIgLThxMjQgLTM0IDU0IC02cTI2IC0zNCA1NiAtNHEyNiAtMzAgNTQgMnEzNCAtMjQgNTggMjJxLTE2MCA2NiAtMzIyIDh6IiBmaWxsPSIjOEM2QTFFIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMTg1IiBjeT0iMjUwIiByPSI3IiBmaWxsPSIjMTIxMTEwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjIyNSIgY3k9IjI2MiIgcj0iNyIgZmlsbD0iIzEyMTExMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIyNjUiIGN5PSIyNDYiIHI9IjciIGZpbGw9IiMxMjExMTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iMzA1IiBjeT0iMjY0IiByPSIxMCIgZmlsbD0iI0Q0QTczQSIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIzNDUiIGN5PSIyNDgiIHI9IjEwIiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0zNjAgMjYycTE0IC0yNiAzMCAtMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Y1RUZFMCIgc3Ryb2tlLXdpZHRoPSI5IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzk1IDI2MnExNCAtMjYgMzAgLTM0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGNUVGRTAiIHN0cm9rZS13aWR0aD0iOSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGcgdHJhbnNmb3JtPSJyb3RhdGUoLTcgMzAwIDE4MCkiPjxlbGxpcHNlIGN4PSIzMDAiIGN5PSIxODAiIHJ4PSIxNjgiIHJ5PSI2NCIgZmlsbD0iI0Y1RUZFMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMzAgMTUwcTEwIDI2IDAgNTYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjc1IDE1MHExMCAyNiAwIDU2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTMyMCAxNTBxMTAgMjYgMCA1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zNjUgMTUwcTEwIDI2IDAgNTYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L2c+PC9zdmc+", "queso": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFDMUExNyIvPjxjaXJjbGUgY3g9IjMwMC4wIiBjeT0iMjAwLjAiIHI9IjE2OC4wIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMzQ1IiByeD0iMTcwIiByeT0iMTYiIGZpbGw9IiMxMjExMTAiIG9wYWNpdHk9Ii41Ii8+PGVsbGlwc2UgY3g9IjMwMCIgY3k9IjI4NSIgcng9IjE2NSIgcnk9IjU1IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE0MCAyNjJxMTggLTQwIDQ4IC0xNHEyMiAtMzYgNTIgLThxMjQgLTM0IDU0IC02cTI2IC0zNCA1NiAtNHEyNiAtMzAgNTQgMnEzNCAtMjQgNTggMjJxLTE2MCA2NiAtMzIyIDh6IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHJlY3QgeD0iMTgwIiB5PSIyMzYiIHdpZHRoPSIzNCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNENEE3M0EiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIyMzUiIHk9IjIzNiIgd2lkdGg9IjM0IiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI0Q0QTczQSIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjI5MCIgeT0iMjM2IiB3aWR0aD0iMzQiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHJlY3QgeD0iMzQ1IiB5PSIyMzYiIHdpZHRoPSIzNCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNENEE3M0EiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIzOTUiIHk9IjIzNiIgd2lkdGg9IjM0IiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI0Q0QTczQSIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIHRyYW5zZm9ybT0icm90YXRlKC03IDMwMCAxODApIj48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMTgwIiByeD0iMTY4IiByeT0iNjQiIGZpbGw9IiNGNUVGRTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjMwIDE1MHExMCAyNiAwIDU2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3NSAxNTBxMTAgMjYgMCA1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zMjAgMTUwcTEwIDI2IDAgNTYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzY1IDE1MHExMCAyNiAwIDU2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPjwvc3ZnPg==", "tequenos": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzI2MjMxRSIvPjxjaXJjbGUgY3g9IjMwMC4wIiBjeT0iMjAwLjAiIHI9IjE2OC4wIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMzQ1IiByeD0iMjAwIiByeT0iMTYiIGZpbGw9IiMxMjExMTAiIG9wYWNpdHk9Ii41Ii8+PGcgdHJhbnNmb3JtPSJyb3RhdGUoLTE2IDI1MCAxNzApIj48cmVjdCB4PSIxMTAiIHk9IjE0OCIgd2lkdGg9IjI2MCIgaGVpZ2h0PSI0NCIgcng9IjIyIiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE3MCAxNTBsLTE2IDQwIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTIyMCAxNTBsLTE2IDQwIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3MCAxNTBsLTE2IDQwIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTMyMCAxNTBsLTE2IDQwIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPjxnIHRyYW5zZm9ybT0icm90YXRlKC0xNiAyNTAgMjMwKSI+PHJlY3QgeD0iMTEwIiB5PSIyMDgiIHdpZHRoPSIyNjAiIGhlaWdodD0iNDQiIHJ4PSIyMiIgZmlsbD0iI0Q0QTczQSIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xNzAgMjEwbC0xNiA0MCIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMjAgMjEwbC0xNiA0MCIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNzAgMjEwbC0xNiA0MCIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zMjAgMjEwbC0xNiA0MCIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvZz48ZyB0cmFuc2Zvcm09InJvdGF0ZSgtMTYgMjUwIDI5MCkiPjxyZWN0IHg9IjExMCIgeT0iMjY4IiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjQ0IiByeD0iMjIiIGZpbGw9IiNENEE3M0EiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMTcwIDI3MGwtMTYgNDAiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjIwIDI3MGwtMTYgNDAiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjcwIDI3MGwtMTYgNDAiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzIwIDI3MGwtMTYgNDAiIHN0cm9rZT0iIzhDNkExRSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L2c+PHBhdGggZD0iTTQyMCAyNTBoMTMwcTAgNzAgLTY1IDcwdC02NSAtNzB6IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGVsbGlwc2UgY3g9IjQ4NSIgY3k9IjI1MCIgcng9IjY1IiByeT0iMTQiIGZpbGw9IiM4QzZBMUUiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=", "tajadas": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFDMUExNyIvPjxjaXJjbGUgY3g9IjMwMC4wIiBjeT0iMjAwLjAiIHI9IjE2OC4wIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMzMwIiByeD0iMjEwIiByeT0iNDAiIGZpbGw9IiNGNUVGRTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZyB0cmFuc2Zvcm09InJvdGF0ZSgtMjAgMjEwIDI3MCkiPjxlbGxpcHNlIGN4PSIyMTAiIGN5PSIyNzAiIHJ4PSI5MiIgcnk9IjMwIiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE2MCAyNzBoMTAwIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPjxnIHRyYW5zZm9ybT0icm90YXRlKC04IDMwMCAyNzApIj48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMjcwIiByeD0iOTIiIHJ5PSIzMCIgZmlsbD0iI0Q0QTczQSIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNTAgMjcwaDEwMCIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvZz48ZyB0cmFuc2Zvcm09InJvdGF0ZSgtMjIgMzkwIDI3MCkiPjxlbGxpcHNlIGN4PSIzOTAiIGN5PSIyNzAiIHJ4PSI5MiIgcnk9IjMwIiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTM0MCAyNzBoMTAwIiBzdHJva2U9IiM4QzZBMUUiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPjxjaXJjbGUgY3g9IjI0MCIgY3k9IjI0MCIgcj0iNyIgZmlsbD0iI0Y1RUZFMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIzMDAiIGN5PSIyMjgiIHI9IjciIGZpbGw9IiNGNUVGRTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iMzUwIiBjeT0iMjQ2IiByPSI3IiBmaWxsPSIjRjVFRkUwIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjQxMCIgY3k9IjIzNiIgcj0iNyIgZmlsbD0iI0Y1RUZFMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjMiLz48L3N2Zz4=", "jugo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzI2MjMxRSIvPjxjaXJjbGUgY3g9IjMwMC4wIiBjeT0iMjAwLjAiIHI9IjE2OC4wIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMzUyIiByeD0iMTEwIiByeT0iMTQiIGZpbGw9IiMxMjExMTAiIG9wYWNpdHk9Ii41Ii8+PHBhdGggZD0iTTIyNSA4MGgxNTBsLTE4IDI2MGgtMTE0eiIgZmlsbD0iI0Y1RUZFMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMzAgMTUwaDE0MGwtMTMgMTkwaC0xMTR6IiBmaWxsPSIjRDRBNzNBIi8+PHBhdGggZD0iTTIyNSA4MGgxNTBsLTE4IDI2MGgtMTE0eiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjM4NSIgY3k9IjkyIiByPSI0MiIgZmlsbD0iI0Q0QTczQSIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjM4NSIgY3k9IjkyIiByPSIyNiIgZmlsbD0iI0Y1RUZFMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMjkwIDE1MGwtMjQgLTEwMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM2QTFFIiBzdHJva2Utd2lkdGg9IjEwIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=", "papelon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzFDMUExNyIvPjxjaXJjbGUgY3g9IjMwMC4wIiBjeT0iMjAwLjAiIHI9IjE2OC4wIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMzUyIiByeD0iMTEwIiByeT0iMTQiIGZpbGw9IiMxMjExMTAiIG9wYWNpdHk9Ii41Ii8+PHBhdGggZD0iTTIyNSA4MGgxNTBsLTE4IDI2MGgtMTE0eiIgZmlsbD0iI0Y1RUZFMCIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMzAgMTUwaDE0MGwtMTMgMTkwaC0xMTR6IiBmaWxsPSIjOEM2QTFFIi8+PHBhdGggZD0iTTIyNSA4MGgxNTBsLTE4IDI2MGgtMTE0eiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTIxMTEwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjI1MCIgeT0iMTcwIiB3aWR0aD0iMzQiIGhlaWdodD0iMzQiIHJ4PSI2IiBmaWxsPSIjRjVFRkUwIiBvcGFjaXR5PSIuODUiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSIzIiB0cmFuc2Zvcm09InJvdGF0ZSgxMiAyNTAgMTcwKSIvPjxyZWN0IHg9IjMxMCIgeT0iMjAwIiB3aWR0aD0iMzQiIGhlaWdodD0iMzQiIHJ4PSI2IiBmaWxsPSIjRjVFRkUwIiBvcGFjaXR5PSIuODUiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSIzIiB0cmFuc2Zvcm09InJvdGF0ZSgxMiAzMTAgMjAwKSIvPjxyZWN0IHg9IjI3MCIgeT0iMjUwIiB3aWR0aD0iMzQiIGhlaWdodD0iMzQiIHJ4PSI2IiBmaWxsPSIjRjVFRkUwIiBvcGFjaXR5PSIuODUiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSIzIiB0cmFuc2Zvcm09InJvdGF0ZSgxMiAyNzAgMjUwKSIvPjxwYXRoIGQ9Ik0zNTIgMTMyYTM2IDM2IDAgMCAxIDYwIC0yOHoiIGZpbGw9IiNENEE3M0EiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=", "refresco": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzI2MjMxRSIvPjxjaXJjbGUgY3g9IjMwMC4wIiBjeT0iMjAwLjAiIHI9IjE2OC4wIiBmaWxsPSIjRDRBNzNBIiBvcGFjaXR5PSIuMTAiLz48ZWxsaXBzZSBjeD0iMzAwIiBjeT0iMzYyIiByeD0iOTAiIHJ5PSIxMiIgZmlsbD0iIzEyMTExMCIgb3BhY2l0eT0iLjUiLz48cGF0aCBkPSJNMjcwIDQwaDYwdjUwcTQwIDMwIDQwIDkwdjE1MHEwIDIyIC0yMiAyMmgtOTZxLTIyIDAgLTIyIC0yMnYtMTUwcTAgLTYwIDQwIC05MHoiIGZpbGw9IiM4QzZBMUUiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIyNjIiIHk9IjI2IiB3aWR0aD0iNzYiIGhlaWdodD0iMjIiIHJ4PSI2IiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHJlY3QgeD0iMjMwIiB5PSIyMDAiIHdpZHRoPSIxNDAiIGhlaWdodD0iODAiIGZpbGw9IiNGNUVGRTAiIHN0cm9rZT0iIzEyMTExMCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIzMDAiIGN5PSIyNDAiIHI9IjIwIiBmaWxsPSIjRDRBNzNBIiBzdHJva2U9IiMxMjExMTAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+"};
+const MENU = [
+  { id: 'arepas', num: '01', name: 'Arepas de la casa', items: [
+    { id: 'reina', name: 'Reina pepiada', desc: 'Pollo desmechado con aguacate y mayonesa.', usd: 4 },
+    { id: 'pelua', name: 'Pelúa', desc: 'Carne mechada con queso amarillo rallado.', usd: 4.5 },
+    { id: 'domino', name: 'Dominó', desc: 'Caraotas negras con queso blanco rallado.', usd: 3.5 },
+    { id: 'catira', name: 'Catira', desc: 'Pollo desmechado con queso amarillo.', usd: 4.5 },
+    { id: 'pabellon', name: 'Pabellón', desc: 'Carne mechada, caraotas, tajadas y queso.', usd: 5 },
+    { id: 'queso', name: 'Queso de mano', desc: 'Sencilla y perfecta: queso de mano bien fresco.', usd: 3 }
+  ] },
+  { id: 'lados', num: '02', name: 'Para acompañar', items: [
+    { id: 'tequenos', name: 'Tequeños x6', desc: 'Crujientes, con salsa de la casa.', usd: 4 },
+    { id: 'tajadas', name: 'Tajadas con queso', desc: 'Plátano maduro frito con queso rallado.', usd: 3 }
+  ] },
+  { id: 'bebidas', num: '03', name: 'Bebidas', items: [
+    { id: 'jugo', name: 'Jugo natural', desc: 'De la fruta del día, hecho al momento.', usd: 2 },
+    { id: 'papelon', name: 'Papelón con limón', desc: 'Bien frío y con mucho hielo.', usd: 1.5 },
+    { id: 'refresco', name: 'Refresco', desc: 'Botella personal, helada.', usd: 1.5 }
+  ] }
+];
+const MAX_FILLS = 5; // máximo de rellenos por arepa
+const BASE_USD = 1.5;
+const BASES = [{ id: 'asada', name: 'Asada', usd: 0 }, { id: 'frita', name: 'Frita', usd: 0.3 }];
+const FILLS = [
+  { id: 'queso', name: 'Queso de mano', usd: 1 }, { id: 'carne', name: 'Carne mechada', usd: 1.5 },
+  { id: 'pollo', name: 'Pollo', usd: 1.2 }, { id: 'caraotas', name: 'Caraotas', usd: 0.6 },
+  { id: 'aguacate', name: 'Aguacate', usd: 0.8 }, { id: 'jamon', name: 'Jamón', usd: 0.7 }
+];
+const EXTRAS = [
+  { id: 'tajadas', name: 'Tajadas', usd: 0.5 }, { id: 'rallado', name: 'Queso rallado', usd: 0.4 },
+  { id: 'ajo', name: 'Salsa de ajo', usd: 0 }, { id: 'picante', name: 'Picante', usd: 0 }
+];
+// ====== FIN DE DATOS ======
+
+const $ = (s) => document.querySelector(s);
+const money = (v) => '$' + v.toFixed(2);
+const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const st = { cat: 'todo', q: '', cart: [], base: 'asada', fill: {}, extra: {} };
+const qtyOf = (key) => { const l = st.cart.find((x) => x.key === key); return l ? l.qty : 0; };
+const bump = (el) => { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); };
+
+function change(key, name, usd, delta) {
+  const l = st.cart.find((x) => x.key === key);
+  if (l) l.qty += delta; else if (delta > 0) st.cart.push({ key, name, usd, qty: delta });
+  st.cart = st.cart.filter((x) => x.qty > 0);
+  renderCart(); renderMenu(false); bump($('#count'));
+}
+
+function waLink() {
+  const total = st.cart.reduce((a, l) => a + l.qty * l.usd, 0);
+  const msg = st.cart.length
+    ? 'Hola, quiero hacer un pedido en Arepa House:\n' + st.cart.map((l) => '- ' + l.qty + ' x ' + l.name + ' (' + money(l.qty * l.usd) + ')').join('\n') + '\nTotal: ' + money(total)
+    : 'Hola, quiero hacer un pedido en Arepa House.';
+  return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg);
+}
+
+function stepper(key) {
+  return '<div class="row baja" style="align-items:center;gap:8px">' +
+    '<button class="round press" type="button" data-sub="' + esc(key) + '" aria-label="Quitar uno">−</button>' +
+    '<span style="font-weight:700;font-size:17px;min-width:20px;text-align:center">' + qtyOf(key) + '</span>' +
+    '<button class="round plus press" type="button" data-add="' + esc(key) + '" aria-label="Agregar uno">+</button></div>';
+}
+
+function renderPills() {
+  const ps = [['todo', 'Todo'], ['arepas', 'Arepas'], ['lados', 'Para acompañar'], ['bebidas', 'Bebidas']];
+  $('#pills').innerHTML = ps.map(([id, label]) =>
+    '<button class="pill press" type="button" data-cat="' + id + '" aria-pressed="' + (st.cat === id) + '">' + label + '</button>').join('');
+}
+
+function renderMenu(animate) {
+  const q = st.q.trim().toLowerCase();
+  const cats = MENU.filter((c) => st.cat === 'todo' || st.cat === c.id)
+    .map((c) => ({ c, items: c.items.filter((it) => !q || (it.name + ' ' + it.desc).toLowerCase().includes(q)) }))
+    .filter((x) => x.items.length);
+  if (!cats.length) {
+    $('#cats').innerHTML = '<div class="col baja" style="background:var(--k2);border:1.5px dashed var(--m);border-radius:20px;padding:32px;align-items:flex-start;gap:14px">' +
+      '<p style="font-size:18px;font-weight:600">No encontramos nada con esa búsqueda.</p>' +
+      '<button class="btn sm press" type="button" data-reset="1">Ver todo el menú</button></div>';
+    return;
+  }
+  $('#cats').innerHTML = cats.map(({ c, items }) =>
+    '<div class="col" style="gap:20px"><h3 class="disp" style="font-size:34px;letter-spacing:-.02em;line-height:1.1"><span class="gold">' + c.num + '</span> ' + esc(c.name) + '</h3><div class="grid">' +
+    items.map((it, i) =>
+      '<div' + (animate ? ' class="in" style="animation-delay:' + i * 70 + 'ms"' : '') + '><article class="card lift col">' +
+      '<div class="ph"><img class="zoom" loading="lazy" src="' + IMG[it.id] + '" alt="Ilustración: ' + esc(it.name) + '"></div>' +
+      '<div class="body col"><h4>' + esc(it.name) + '</h4><p class="muted" style="line-height:1.45">' + esc(it.desc) + '</p>' +
+      '<div class="foot"><span class="price">' + money(it.usd) + '</span>' +
+      (qtyOf(it.id) ? stepper(it.id) : '<button class="btn sm press" type="button" data-add="' + it.id + '" style="background:var(--c);border-color:var(--c);font-size:15px">Agregar</button>') +
+      '</div></div></article></div>').join('') + '</div></div>').join('');
+}
+
+function renderCart() {
+  const count = st.cart.reduce((a, l) => a + l.qty, 0);
+  const total = st.cart.reduce((a, l) => a + l.qty * l.usd, 0);
+  $('#count').textContent = count;
+  document.querySelectorAll('.wa').forEach((a) => { a.href = waLink(); });
+  $('#cart').innerHTML = '<h2 class="disp" style="font-size:26px;letter-spacing:-.02em">Tu pedido</h2>' +
+    (count ? st.cart.map((l) =>
+      '<div class="line row"><span style="font-weight:700;flex:1 1 200px;min-width:0">' + esc(l.name) + '</span>' +
+      '<div class="row" style="align-items:center;gap:10px">' + stepper(l.key) +
+      '<span class="price" style="font-size:18px;min-width:64px;text-align:right">' + money(l.qty * l.usd) + '</span></div></div>').join('') +
+      '<div class="row" style="align-items:center;justify-content:space-between;gap:14px">' +
+      '<span class="disp" style="font-size:26px;letter-spacing:-.02em">Total: <span class="gold">' + money(total) + '</span></span>' +
+      '<div class="row" style="gap:12px"><button class="pill press" type="button" data-clear="1">Vaciar</button>' +
+      '<a class="btn sm press" target="_blank" rel="noopener" href="' + waLink() + '">Enviar pedido por WhatsApp</a></div></div>'
+      : '<p class="muted">Todavía no has agregado nada. Elige del menú o arma tu arepa.</p>');
+}
+
+function built() {
+  const base = BASES.find((b) => b.id === st.base);
+  const fills = FILLS.filter((f) => st.fill[f.id]);
+  const extras = EXTRAS.filter((x) => st.extra[x.id]);
+  const names = (xs) => xs.map((x) => x.name.toLowerCase()).join(', ');
+  return {
+    ok: fills.length > 0,
+    usd: BASE_USD + base.usd + fills.concat(extras).reduce((a, x) => a + x.usd, 0),
+    name: 'Arepa ' + base.name.toLowerCase() + (fills.length ? ' con ' + names(fills) : '') + (extras.length ? ' + ' + names(extras) : '')
+  };
+}
+
+function renderBuilder(done) {
+  const full = FILLS.filter((f) => st.fill[f.id]).length >= MAX_FILLS;
+  const pill = (o, on, group) => '<button class="pill press" type="button" data-' + group + '="' + o.id + '" aria-pressed="' + on + '"' + (group === 'fill' && full && !on ? ' disabled' : '') + '>' + o.name + (o.usd ? ' +' + money(o.usd) : '') + '</button>';
+  $('#bMax').hidden = !full;
+  $('#bBases').innerHTML = BASES.map((b) => pill(b, st.base === b.id, 'base')).join('');
+  $('#bFills').innerHTML = FILLS.map((f) => pill(f, !!st.fill[f.id], 'fill')).join('');
+  $('#bExtras').innerHTML = EXTRAS.map((x) => pill(x, !!st.extra[x.id], 'extra')).join('');
+  const b = built();
+  $('#bDesc').textContent = b.ok ? b.name + '.' : b.name + ', todavía sin relleno.';
+  $('#bPrice').textContent = money(b.usd);
+  $('#bAdd').hidden = !b.ok;
+  $('#bHint').hidden = b.ok || !!done;
+  $('#bDone').hidden = !done;
+  bump($('#bPrice'));
+}
+
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('button');
+  if (!t) return;
+  const d = t.dataset;
+  if (t.id === 'cartBtn') {
+    const open = $('#cart').hidden;
+    $('#cart').hidden = !open; t.setAttribute('aria-expanded', open);
+  } else if (d.cat) { st.cat = d.cat; renderPills(); renderMenu(true); }
+  else if (d.reset) { st.cat = 'todo'; st.q = ''; $('#buscar').value = ''; renderPills(); renderMenu(true); }
+  else if (d.clear) { st.cart = []; renderCart(); renderMenu(false); }
+  else if (d.add || d.sub) {
+    const key = d.add || d.sub;
+    const line = st.cart.find((x) => x.key === key);
+    let item = line;
+    if (!item) MENU.forEach((c) => c.items.forEach((it) => { if (it.id === key) item = it; }));
+    if (item) change(key, item.name, item.usd, d.add ? 1 : -1);
+  } else if (d.base) { st.base = d.base; renderBuilder(); }
+  else if (d.fill) {
+    const n = FILLS.filter((f) => st.fill[f.id]).length;
+    if (st.fill[d.fill] || n < MAX_FILLS) st.fill[d.fill] = !st.fill[d.fill];
+    renderBuilder();
+  }
+  else if (d.extra) { st.extra[d.extra] = !st.extra[d.extra]; renderBuilder(); }
+  else if (t.id === 'bAdd') {
+    const b = built();
+    change('c:' + b.name, b.name, b.usd, 1);
+    st.base = 'asada'; st.fill = {}; st.extra = {};
+    renderBuilder(true);
+  }
+});
+$('#buscar').addEventListener('input', (e) => { st.q = e.target.value; renderMenu(true); });
+
+renderPills(); renderMenu(true); renderCart(); renderBuilder();
+
+if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const io = new IntersectionObserver((es) => es.forEach((en) => {
+    if (en.isIntersecting) { en.target.classList.remove('pre'); io.unobserve(en.target); }
+  }), { threshold: 0.1 });
+  document.querySelectorAll('.rev').forEach((el) => {
+    if (el.getBoundingClientRect().top > innerHeight * 0.9) { el.classList.add('pre'); io.observe(el); }
+  });
+}
+</script>
+</body>
+</html>
