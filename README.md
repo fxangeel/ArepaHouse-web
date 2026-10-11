@@ -4,12 +4,16 @@ Demo de la web de Arepa House (Ocumare de la Costa, Aragua). Un solo archivo: `i
 
 - Menú con categorías, filtros y buscador.
 - Armador de arepas (máximo 5 rellenos) con precio en vivo.
-- Carrito y pedido por WhatsApp.
+- Carrito y pedido por WhatsApp, con nombre y tipo de entrega (retiro o domicilio).
+- Precios en dólares y bolívares con la tasa oficial BCV automática.
+- El pedido se guarda en el navegador aunque se recargue la página.
+- Barra fija de pedido en el teléfono e indicador de abierto/cerrado.
 
 ## Pendiente antes de publicar de verdad
 
 - El menú, los precios, los rellenos y los extras son de ejemplo.
 - Falta el número de WhatsApp (`WHATSAPP` al inicio del script), teléfono, horario, dirección e Instagram.
+- El horario del indicador abierto/cerrado (`HORARIO`) es de ejemplo: 7:00 am a 10:00 pm.
 - Las imágenes son ilustraciones de muestra; van las fotos reales.
 - Quitar la franja "Demo de diseño" y la etiqueta `noindex`.
 
